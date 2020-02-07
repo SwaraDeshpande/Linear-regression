@@ -15,6 +15,8 @@ import numpy as np
 import pandas as pd
 import matlablib.plot as plt
 import pylab as pb
+from sklearn import linear_model
+
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 get_ipython().system('wget -O FuelConsumption.csv https://s3-api.us-geo.objectstorage.softlayer.net/cf-courses-data/CognitiveClass/ML0101ENv3/labs/FuelConsumptionCo2.csv')
@@ -42,8 +44,25 @@ plt.xlabel("Cylinders") #giving the x-axis label
 plt.ylabel("Emission") #giving the yiaxis label
 plt.show()
 
+#Creating train and test dataset
+msk = np.random.rand(len(df)) < 0.8
+train = cdf[msk]
+test = cdf[tmsk]
 
+#training the data distribution
+plt.scatter(train.CYLINDERS, train.CO2EMISSIONS,  color='blue')
+plt.xlabel("Cylinders")
+plt.ylabel("Emission")
+plt.show()
 
+#modelling the data
+regr = linear_model.LinearRegression()
+train_x = np.asanyarray(train[['CYLINDERS']])
+train_y = np.asanyarray(train[['CO2EMISSIONS']])
+regr.fit (train_x, train_y)
+# The coefficients
+print ('Coefficients: ', regr.coef_)
+print ('Intercept: ',regr.intercept_)
 
 # In[ ]:
 
